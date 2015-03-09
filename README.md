@@ -16,7 +16,7 @@ require 'zaif.php';
 PublicAPIを使う場合を含めまずはインスタントを作ります。
 ```php
 $key = "YOUR API KEY";
-$secret = "YOUR SECRET KEY";
+$secret = "YOUR API SECRET";
 
 $zaif = new Zaif($key, $secret);
 ```
