@@ -42,3 +42,6 @@ $data = $zaif->trade("trade", array('currency_pair' => 'mona_jpy', 'action' => '
 ##公式ドキュメント
 APIの詳細などは以下をご覧下さい。  
 https://zaif.jp/doc_api
+
+##その他
+Mona: MLreYfG2CyefY8MdnasAUnGpG44RV2d6PV
