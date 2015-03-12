@@ -13,7 +13,7 @@ require 'zaif.php';
 関数(エンドポイント,オプション)というTwitterライブラリによくある仕様にしました。  
   
   
-PublicAPIを使う場合を含めまずはインスタントを作ります。
+PublicAPIを使う場合を含めまずはインスタンスを作ります。
 ```php
 $key = "YOUR API KEY";
 $secret = "YOUR API SECRET";
