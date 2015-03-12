@@ -2,7 +2,7 @@
 class Zaif {
 
 	const PUBLIC_BASE_URL = "https://api.zaif.jp/api/1";
-	const SECRET_BASE_URL = "https://zaif.jp/tapi";
+	const TRADE_BASE_URL = "https://zaif.jp/tapi";
 
 	private $key;
 	private $secret;
@@ -81,7 +81,7 @@ class Zaif {
 		$sign = hash_hmac( 'sha512', $postdata_query, $this->secret);
 		$header = array( "Sign: {$sign}", "Key: {$this->key}", );
 
-		$data = self::post( self::SECRET_BASE_URL, $header, $postdata_query );
+		$data = self::post( self::TRADE_BASE_URL, $header, $postdata_query );
 		$this->last_api_time = time();
 		$data = json_decode( $data );
 
