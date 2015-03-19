@@ -37,6 +37,7 @@ class Zaif {
 		switch ($prm) {
 			case 'btc_jpy':
 			case 'mona_jpy':
+			case 'mona_btc':
 				break;
 			default:
 				throw new Exception('Argument has not been set.');
