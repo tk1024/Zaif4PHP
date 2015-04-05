@@ -3,25 +3,19 @@ class Zaif {
 
 	const PUBLIC_BASE_URL = "https://api.zaif.jp/api/1";
 	const TRADE_BASE_URL = "https://zaif.jp/tapi";
+	const STREAMING_BASE_URL = "ws://api.zaif.jp:8888/stream";
 
 	private $key;
 	private $secret;
 	private $nonce;
-	private $last_time;
 
 	public function __construct($key, $secret) {
 		$this->key = $key;
 		$this->secret = $secret;
 		$this->nonce = time();
-		$this->last_api_time = 0;
 	}
 
 	public function pub($endpoint, $prm) {
-
-		//1秒に1回以上のリクエストの場合は1秒待つ
-		if( time() - $this->last_api_time < 1 ) {
-			sleep(1);
-		}
 
 		switch ($endpoint) {
 			case 'last_price':
@@ -46,7 +40,6 @@ class Zaif {
 
 		$url = self::PUBLIC_BASE_URL.'/'.$endpoint.'/'.$prm;
 		$data = self::get($url);
-		$this->last_api_time = time();
 		$data = json_decode( $data );
 
 		return $data;
@@ -68,11 +61,6 @@ class Zaif {
 				break;
 		}
 
-		//1秒に1回以上のリクエストの場合は1秒待つ
-		if( time() - $this->last_api_time < 1 ) {
-			sleep(1);
-		}
-
 		$postdata = array( "nonce" => $this->nonce++, "method" => $method );
 		if( !empty( $prms ) ) {
 			$postdata = array_merge( $postdata, $prms );
@@ -83,7 +71,6 @@ class Zaif {
 		$header = array( "Sign: {$sign}", "Key: {$this->key}", );
 
 		$data = self::post( self::TRADE_BASE_URL, $header, $postdata_query );
-		$this->last_api_time = time();
 		$data = json_decode( $data );
 
 		return $data;
@@ -93,11 +80,11 @@ class Zaif {
 
 		$ch = curl_init();
 		$options = array(
-						CURLOPT_URL => $url,
-						CURLOPT_HEADER => false,
-						CURLOPT_RETURNTRANSFER => true,
-						CURLOPT_SSL_VERIFYPEER => false,
-					);
+			CURLOPT_URL => $url,
+			CURLOPT_HEADER => false,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_SSL_VERIFYPEER => false,
+		);
 
 		curl_setopt_array($ch, $options);
 
@@ -111,14 +98,14 @@ class Zaif {
 
 		$ch = curl_init();
 		$options = array(
-						CURLOPT_URL => $url,
-						CURLOPT_HEADER => false,
-						CURLOPT_RETURNTRANSFER => true,
-						CURLOPT_SSL_VERIFYPEER => false,
-						CURLOPT_POST => true,
-						CURLOPT_POSTFIELDS => $postdata,
-						CURLOPT_HTTPHEADER => $header,
-					);
+			CURLOPT_URL => $url,
+			CURLOPT_HEADER => false,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_POST => true,
+			CURLOPT_POSTFIELDS => $postdata,
+			CURLOPT_HTTPHEADER => $header,
+		);
 
 		curl_setopt_array($ch, $options);
 
