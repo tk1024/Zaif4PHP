@@ -15,7 +15,7 @@ class Zaif {
 		$this->nonce = time();
 	}
 
-	public function pub($endpoint, $prm) {
+	public static function pub($endpoint, $prm) {
 
 		switch ($endpoint) {
 			case 'last_price':
