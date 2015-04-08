@@ -6,7 +6,7 @@ Zaif4PHP
 ##準備
 
 ```php
-require 'zaif.php';
+require 'Zaif.php';
 ```
 
 ##使い方
