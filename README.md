@@ -10,7 +10,7 @@ require 'Zaif.php';
 ```
 
 ##使い方
-関数(エンドポイント,オプション)というTwitterライブラリによくある仕様にしました。  
+function(endpoint,options)というTwitterライブラリによくある仕様にしました。  
   
   
 PublicAPIを使う場合を含めまずはインスタンスを作ります。
