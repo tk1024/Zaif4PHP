@@ -3,3 +3,7 @@ dea/
 *.swp
 *.swo
 .*.un*
+
+composer.lock
+composer.phar
+vendor
