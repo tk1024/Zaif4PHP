@@ -6,7 +6,7 @@
 一部機能を除けば、Windowsでも動くと思いますが、Linuxでの動作を想定しています。
 
 ##事前に必要な物
-・cURL
+- cURL
 
 ##導入
 Public API, Trade APIだけを使う場合は'Zaif.php'を含めるだけで動きます。
