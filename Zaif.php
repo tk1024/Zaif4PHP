@@ -77,7 +77,7 @@ class Zaif {
 
 	public static function streaming($prms, $callback) {
 
-		$file_path = 'vendor/autoload.php';
+		$file_path = dirname(__FILE__).'/vendor/autoload.php';
 
 		if (file_exists($file_path) && is_readable($file_path)) {
 		    require_once $file_path ;
