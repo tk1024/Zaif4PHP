@@ -56,6 +56,8 @@ class Zaif {
 			case 'trade' :
 			case 'cancel_order' :
 			case 'withdraw' :
+			case 'deposit_history' :
+			case 'withdraw_history' :
 				break;
 			default:
 				throw new Exception('Argument has not been set.');
