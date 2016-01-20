@@ -5,7 +5,7 @@ use WebSocket\Client;
 class Zaif {
 
 	const PUBLIC_BASE_URL = "https://api.zaif.jp/api/1";
-	const TRADE_BASE_URL = "https://zaif.jp/tapi";
+	const TRADE_BASE_URL = "https://api.zaif.jp/tapi";
 	const STREAMING_BASE_URL = "ws://api.zaif.jp:8888/stream";
 
 	private $key;
