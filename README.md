@@ -84,7 +84,7 @@ Zaif::streaming(array('currency_pair' => 'mona_jpy'),function($data){
 ```
 ##公式ドキュメント
 APIの詳細などは以下をご覧下さい。  
-https://zaif.jp/doc_api
+https://corp.zaif.jp/api-docs/
 
 ##その他
 Mona: MLreYfG2CyefY8MdnasAUnGpG44RV2d6PV
