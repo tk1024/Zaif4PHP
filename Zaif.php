@@ -52,6 +52,7 @@ class Zaif {
 		switch ($method) {
 			case 'get_info':
 			case 'get_info2':
+			case 'get_personal_info':
 			case 'trade_history':
 			case 'active_orders':
 			case 'trade' :
