@@ -51,6 +51,8 @@ class Zaif {
 	public function trade($method, $prms=null) {
 		switch ($method) {
 			case 'get_info':
+			case 'get_info2':
+			case 'get_personal_info':
 			case 'trade_history':
 			case 'active_orders':
 			case 'trade' :
