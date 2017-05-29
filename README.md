@@ -1,14 +1,14 @@
-#Zaif4PHP
+# Zaif4PHP
 
 暗号通貨取引所ZaifのPHP用ライブラリです。
 追加作業を行えばストリーミングAPIも使えます。
 
 一部機能を除けば、Windowsでも動くと思いますが、Linuxでの動作を想定しています。
 
-##事前に必要な物
+## 事前に必要な物
 - cURL
 
-##導入
+## 導入
 Public API, Trade APIだけを使う場合は'Zaif.php'を含めるだけで動きます。
 Streaming API を使う場合はZaif.php が置いてあるディレクトリで
 ```
@@ -17,9 +17,9 @@ php composer.phar install
 ```
 このコマンドを実行して、composer 及び Websocket Client for PHP を導入して下さい。
 
-##使い方
+## 使い方
 
-###はじめに
+### はじめに
 
 Public API, Trade API, Streaming APIどの場合でも最初に
 ```php
@@ -27,10 +27,10 @@ require 'Zaif.php';
 ```
 この1行を書き、Zaif.phpをコードに含めるようにして下さい。
 
-###返り値
+### 返り値
 JSONがデコードされた状態で値が帰ってきます。
 
-###Public API
+### Public API
 
 Public APIを使うのにAPI Keyを発行する必要はありません。
 ```php
@@ -43,7 +43,7 @@ $depth = Zaif::pub("depth","mona_jpy");
 //出力
 var_dump($price, $depth);
 ```
-###Trade API
+### Trade API
 
 Trade APIを使うのにAPI Keyを発行する必要があります。
 https://zaif.jp/api_keys で事前にAPI Keyを発行し、permsのtrade(情報を見る場合はinfoも)を有効にしておいて下さい。
@@ -73,7 +73,7 @@ $active_orders = $zaif->trade("active_orders", array('currency_pair' => 'mona_jp
 //出力
 var_dump($info, $trade_ask, $active_orders);
 ```
-###Streaming API
+### Streaming API
 
 Streaming APIを使うのにAPI Keyを発行する必要はありません。
 ```php
@@ -82,9 +82,9 @@ Zaif::streaming(array('currency_pair' => 'mona_jpy'),function($data){
 	var_dump($data);
 });
 ```
-##公式ドキュメント
+## 公式ドキュメント
 APIの詳細などは以下をご覧下さい。  
 https://corp.zaif.jp/api-docs/
 
-##ライセンス
+## ライセンス
 MIT
