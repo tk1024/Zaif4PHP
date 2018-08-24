@@ -27,6 +27,8 @@ class Zaif
       case 'ticker':
       case 'trades':
       case 'depth':
+      case 'currencies':
+      case 'currency_pairs':
         break;
       default:
         throw new Exception('Argument has not been set.');
