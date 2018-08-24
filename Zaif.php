@@ -2,9 +2,45 @@
 
 use WebSocket\Client;
 
+class PublicApiEndpoint
+{
+  const LAST_PRICE = "last_price";
+  const TICKER = "ticker";
+  const TRADES = "trades";
+  const DEPTH = "depth";
+  const CURRENCIES = "currencies";
+  const CURRENCY_PAIRS = "currency_pairs";
+
+  public static function getConstants()
+  {
+    $oClass = new ReflectionClass(__class__);
+    return $oClass->getConstants();
+  }
+}
+
+class TradeApiEndpoint
+{
+  const GET_INFO = "get_info";
+  const GET_INFO2 = "get_info2";
+  const GET_PERSONAL_INFO = "get_personal_info";
+  const GET_ID_INFO = "get_id_info";
+  const TRADE_HISTORY = "trade_history";
+  const ACTIVE_ORDERS = "active_orders";
+  const TRADE = "trade";
+  const CANCEL_ORDER = "cancel_order";
+  const WITHDRAW = "withdraw";
+  const DEPOSIT_HISTORY = "deposit_history";
+  const WITHDRAW_HISTORY = "withdraw_history";
+
+  public static function getConstants()
+  {
+    $oClass = new ReflectionClass(__class__);
+    return $oClass->getConstants();
+  }
+}
+
 class Zaif
 {
-
   const PUBLIC_BASE_URL = "https://api.zaif.jp/api/1";
   const TRADE_BASE_URL = "https://api.zaif.jp/tapi";
   const STREAMING_BASE_URL = "ws://api.zaif.jp:8888/stream";
@@ -22,17 +58,8 @@ class Zaif
 
   public static function pub($endpoint, $prm)
   {
-    switch ($endpoint) {
-      case 'last_price':
-      case 'ticker':
-      case 'trades':
-      case 'depth':
-      case 'currencies':
-      case 'currency_pairs':
-        break;
-      default:
-        throw new Exception('Argument has not been set.');
-        break;
+    if (!in_array($endpoint, array_values(PublicApiEndpoint::getConstants()))) {
+      throw new Exception('Argument has not been set.');
     }
 
     $url = self::PUBLIC_BASE_URL . '/' . $endpoint . '/' . $prm;
@@ -40,26 +67,12 @@ class Zaif
     $data = json_decode($data);
 
     return $data;
-
   }
 
   public function trade($method, $prms = null)
   {
-    switch ($method) {
-      case 'get_info':
-      case 'get_info2':
-      case 'get_personal_info':
-      case 'trade_history':
-      case 'active_orders':
-      case 'trade':
-      case 'cancel_order':
-      case 'withdraw':
-      case 'deposit_history':
-      case 'withdraw_history':
-        break;
-      default:
-        throw new Exception('Argument has not been set.');
-        break;
+    if (!in_array($method, array_values(TradeApiEndpoint::getConstants()))) {
+      throw new Exception('Argument has not been set.');
     }
 
     $postdata = array("nonce" => $this->nonce++, "method" => $method);
