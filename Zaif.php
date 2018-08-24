@@ -33,16 +33,6 @@ class Zaif
         break;
     }
 
-    switch ($prm) {
-      case 'btc_jpy':
-      case 'mona_jpy':
-      case 'mona_btc':
-        break;
-      default:
-        throw new Exception('Argument has not been set.');
-        break;
-    }
-
     $url = self::PUBLIC_BASE_URL . '/' . $endpoint . '/' . $prm;
     $data = self::get($url);
     $data = json_decode($data);
@@ -92,17 +82,6 @@ class Zaif
       require_once $file_path;
     } else {
       throw new Exception('You can not use Streaming API.You should check including libray.');
-    }
-
-    switch ($prms['currency_pair']) {
-      case 'btc_jpy':
-      case 'mona_jpy':
-      case 'mona_btc':
-        break;
-      default:
-        throw new Exception('Argument has not been set.');
-        return 0;
-        break;
     }
 
     $ws = self::STREAMING_BASE_URL . '?' . http_build_query($prms);
