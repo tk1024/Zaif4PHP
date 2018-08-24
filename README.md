@@ -5,6 +5,9 @@
 
 一部機能を除けば、Windowsでも動くと思いますが、Linuxでの動作を想定しています。
 
+## 動作環境
+- PHP7.2以降での動作を想定しています
+
 ## 事前に必要な物
 - cURL
 
@@ -35,10 +38,10 @@ JSONがデコードされた状態で値が帰ってきます。
 Public APIを使うのにAPI Keyを発行する必要はありません。
 ```php
 //BTC_JPYの価格を取得する
-$price = Zaif::pub("last_price","btc_jpy");
+$price = Zaif::pub(PublicApiEndpoint::LAST_PRICE,"btc_jpy");
 
 //MONA_JPYの板情報を取得する
-$depth = Zaif::pub("depth","mona_jpy");
+$depth = Zaif::pub(PublicApiEndpoint::DEPTH,"mona_jpy");
 
 //出力
 var_dump($price, $depth);
@@ -55,20 +58,20 @@ $secret = "YOUR API SECRET";
 $zaif = new Zaif($key, $secret);
 
 //残高,APIの権限,トレード数,アクティブな注文数,サーバーのタイムスタンプを取得する
-$info = $zaif->trade("get_info");
+$info = $zaif->trade(TradeApiEndpoint::GET_INFO);
 
 //1モナ100円で15モナ売り板に出す
-$trade_ask = $zaif->trade("trade",
-	array(
+$trade_ask = $zaif->trade(TradeApiEndpoint::TRADE,
+	[
 		'currency_pair' => 'mona_jpy',
 		'action' => 'ask',
 		'price' => 100,
 		'amount' => 15 
-	)
+	]
 );
 
 //MONA_JPYの現在有効な注文一覧を表示する
-$active_orders = $zaif->trade("active_orders", array('currency_pair' => 'mona_jpy'));
+$active_orders = $zaif->trade(TradeApiEndpoint::ACTIVE_ORDERS, ['currency_pair' => 'mona_jpy']);
 
 //出力
 var_dump($info, $trade_ask, $active_orders);
@@ -77,7 +80,7 @@ var_dump($info, $trade_ask, $active_orders);
 
 Streaming APIを使うのにAPI Keyを発行する必要はありません。
 ```php
-Zaif::streaming(array('currency_pair' => 'mona_jpy'),function($data){
+Zaif::streaming(['currency_pair' => 'mona_jpy'],function($data){
 	//板の更新や取引が行われる毎に情報を表示
 	var_dump($data);
 });
