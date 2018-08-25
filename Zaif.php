@@ -63,29 +63,50 @@ class Zaif
     }
 
     $url = self::PUBLIC_BASE_URL . '/' . $endpoint . '/' . $prm;
-    $data = self::get($url);
+    $data = CurlWrapper::get($url);
     $data = json_decode($data);
 
     return $data;
   }
 
-  public function trade($method, $prms = null)
+  public function trade($endpoint, $prms = null)
   {
-    if (!in_array($method, array_values(TradeApiEndpoint::getConstants()))) {
+    if (!in_array($endpoint, array_values(TradeApiEndpoint::getConstants()))) {
       throw new Exception('Argument has not been set.');
     }
 
-    $postdata = array("nonce" => $this->nonce++, "method" => $method);
+    $postdata = [
+      "nonce" => $this->getNonceWithIncrement(),
+      "method" => $endpoint
+    ];
+
     if (!empty($prms)) {
       $postdata = array_merge($postdata, $prms);
     }
+
     $postdata_query = http_build_query($postdata);
-    $sign = hash_hmac('sha512', $postdata_query, $this->secret);
-    $header = array("Sign: {$sign}", "Key: {$this->key}", );
-    $data = self::post(self::TRADE_BASE_URL, $header, $postdata_query);
+    $data = CurlWrapper::post(self::TRADE_BASE_URL, $this->getTradeHeader($postdata_query), $postdata_query);
     $data = json_decode($data);
 
     return $data;
+  }
+
+  private function getNonceWithIncrement()
+  {
+    return $this->nonce++;
+  }
+
+  private function getSign($postdata_query)
+  {
+    return hash_hmac('sha512', $postdata_query, $this->secret);
+  }
+
+  private function getTradeHeader($postdata_query)
+  {
+    return [
+      "Sign: {$this->getSign($postdata_query)}",
+      "Key: {$this->key}"
+    ];
   }
 
   public static function streaming($prms, $callback)
@@ -112,8 +133,11 @@ class Zaif
       }
     }
   }
+}
 
-  private static function get($url)
+class CurlWrapper
+{
+  public static function get($url)
   {
     $ch = curl_init();
     $options = array(
@@ -129,14 +153,13 @@ class Zaif
     return $data;
   }
 
-  private static function post($url, $header, $postdata)
+  public static function post($url, $header, $postdata)
   {
     $ch = curl_init();
     $options = array(
       CURLOPT_URL => $url,
       CURLOPT_HEADER => false,
       CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_SSL_VERIFYPEER => false,
       CURLOPT_POST => true,
       CURLOPT_POSTFIELDS => $postdata,
       CURLOPT_HTTPHEADER => $header,
