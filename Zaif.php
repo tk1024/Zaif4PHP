@@ -39,10 +39,27 @@ class TradeApiEndpoint
   }
 }
 
+class TradeLeverageApiEndpoint
+{
+  const GET_POSITIONS = "get_positions";
+  const POSTION_HISTORY = "position_history";
+  const ACTIVE_POSITIONS = "active_positions";
+  const CREATE_POSITION = "create_position";
+  const CHANGE_POSITION = "change_position";
+  const CANCEL_POSITION = "cancel_position";
+
+  public static function getConstants()
+  {
+    $oClass = new ReflectionClass(__class__);
+    return $oClass->getConstants();
+  }
+}
+
 class Zaif
 {
   const PUBLIC_BASE_URL = "https://api.zaif.jp/api/1";
   const TRADE_BASE_URL = "https://api.zaif.jp/tapi";
+  const TRADE_LEVERAGE_BASE_URL = "https://api.zaif.jp/tlapi";
   const STREAMING_BASE_URL = "ws://api.zaif.jp:8888/stream";
 
   private $key;
@@ -86,6 +103,28 @@ class Zaif
 
     $postdata_query = http_build_query($postdata);
     $data = CurlWrapper::post(self::TRADE_BASE_URL, $this->getTradeHeader($postdata_query), $postdata_query);
+    $data = json_decode($data);
+
+    return $data;
+  }
+
+  public function tradeLeverage($endpoint, $prms = null)
+  {
+    if (!in_array($endpoint, array_values(TradeLeverageApiEndpoint::getConstants()))) {
+      throw new Exception('Argument has not been set.');
+    }
+
+    $postdata = [
+      "nonce" => $this->getNonceWithIncrement(),
+      "method" => $endpoint
+    ];
+
+    if (!empty($prms)) {
+      $postdata = array_merge($postdata, $prms);
+    }
+
+    $postdata_query = http_build_query($postdata);
+    $data = CurlWrapper::post(self::TRADE_LEVERAGE_BASE_URL, $this->getTradeHeader($postdata_query), $postdata_query);
     $data = json_decode($data);
 
     return $data;
