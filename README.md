@@ -35,7 +35,7 @@ JSONがデコードされた状態で値が帰ってきます。
 
 ### 現物公開API
 
-Public APIを使うのにAPI Keyを発行する必要はありません。
+現物公開APIを使うのにAPI Keyを発行する必要はありません。
 ```php
 //BTC_JPYの価格を取得する
 $price = Zaif::pub(PublicApiEndpoint::LAST_PRICE,"btc_jpy");
@@ -48,8 +48,8 @@ var_dump($price, $depth);
 ```
 ### 現物取引API
 
-Trade APIを使うのにAPI Keyを発行する必要があります。
-https://zaif.jp/api_keys で事前にAPI Keyを発行し、permsのtrade(情報を見る場合はinfoも)を有効にしておいて下さい。
+現物取引APIを使うのにAPI Keyを発行する必要があります。
+https://zaif.jp/api_keys で事前にAPI Keyを発行し、権限のtrade(情報を見る場合はinfoも)を有効にしておいて下さい。
 ```php
 $key = "YOUR API KEY";
 $secret = "YOUR API SECRET";
@@ -78,6 +78,7 @@ var_dump($info, $trade_ask, $active_orders);
 ```
 
 ### 先物公開API
+先物公開APIを使うのにAPI Keyを発行する必要はありません。
 
 ```php
 // 先物取引の情報を取得します
@@ -88,6 +89,9 @@ var_dump($groups);
 ```
 
 ### レバレッジ取引API
+
+レバレッジ取引APIを使うのにAPI Keyを発行する必要があります。
+https://zaif.jp/api_keys で事前にAPI Keyを発行し、権限のtrade(情報を見る場合はinfoも)を有効にしておいて下さい。
 
 ```php
 
