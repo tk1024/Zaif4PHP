@@ -39,6 +39,22 @@ class TradeApiEndpoint
   }
 }
 
+class PublicFuturesApiEndpoint
+{
+  const GROUPS = "groups";
+  const LAST_PRICE = "last_price";
+  const TICKER = "ticker";
+  const TRADES = "trades";
+  const DEPTH = "depth";
+  const SWAP_HISTORY = "swap_history";
+
+  public static function getConstants()
+  {
+    $oClass = new ReflectionClass(__class__);
+    return $oClass->getConstants();
+  }
+}
+
 class TradeLeverageApiEndpoint
 {
   const GET_POSITIONS = "get_positions";
@@ -59,6 +75,7 @@ class Zaif
 {
   const PUBLIC_BASE_URL = "https://api.zaif.jp/api/1";
   const TRADE_BASE_URL = "https://api.zaif.jp/tapi";
+  const PUBLIC_FUTURES_BASE_URL = "https://api.zaif.jp/fapi/1";
   const TRADE_LEVERAGE_BASE_URL = "https://api.zaif.jp/tlapi";
   const STREAMING_BASE_URL = "ws://api.zaif.jp:8888/stream";
 
@@ -73,13 +90,13 @@ class Zaif
     $this->nonce = time();
   }
 
-  public static function pub($endpoint, $prm)
+  public static function pub($endpoint, $prm = "")
   {
     if (!in_array($endpoint, array_values(PublicApiEndpoint::getConstants()))) {
-      throw new Exception('Argument has not been set.');
+      throw new Exception("Argument has not been set.");
     }
 
-    $url = self::PUBLIC_BASE_URL . '/' . $endpoint . '/' . $prm;
+    $url = self::PUBLIC_BASE_URL . "/" . $endpoint . "/" . $prm;
     $data = CurlWrapper::get($url);
     $data = json_decode($data);
 
@@ -89,7 +106,7 @@ class Zaif
   public function trade($endpoint, $prms = null)
   {
     if (!in_array($endpoint, array_values(TradeApiEndpoint::getConstants()))) {
-      throw new Exception('Argument has not been set.');
+      throw new Exception("Argument has not been set.");
     }
 
     $postdata = [
@@ -108,10 +125,23 @@ class Zaif
     return $data;
   }
 
+  public static function publicFutures($endpoint, $prms = []) {
+    if (!in_array($endpoint, array_values(PublicFuturesApiEndpoint::getConstants()))) {
+      throw new Exception("Argument has not been set.");
+    }
+
+    $url = self::PUBLIC_FUTURES_BASE_URL . "/" . $endpoint . "/" . implode("/", $prms);
+    $data = CurlWrapper::get($url);
+    $data = json_decode($data);
+
+    return $data;
+
+  }
+
   public function tradeLeverage($endpoint, $prms = null)
   {
     if (!in_array($endpoint, array_values(TradeLeverageApiEndpoint::getConstants()))) {
-      throw new Exception('Argument has not been set.');
+      throw new Exception("Argument has not been set.");
     }
 
     $postdata = [
@@ -137,7 +167,7 @@ class Zaif
 
   private function getSign($postdata_query)
   {
-    return hash_hmac('sha512', $postdata_query, $this->secret);
+    return hash_hmac("sha512", $postdata_query, $this->secret);
   }
 
   private function getTradeHeader($postdata_query)
@@ -151,15 +181,15 @@ class Zaif
   public static function streaming($prms, $callback)
   {
 
-    $file_path = dirname(__FILE__) . '/vendor/autoload.php';
+    $file_path = dirname(__FILE__) . "/vendor/autoload.php";
 
     if (file_exists($file_path) && is_readable($file_path)) {
       require_once $file_path;
     } else {
-      throw new Exception('You can not use Streaming API.You should check including libray.');
+      throw new Exception("You can not use Streaming API.You should check including libray.");
     }
 
-    $ws = self::STREAMING_BASE_URL . '?' . http_build_query($prms);
+    $ws = self::STREAMING_BASE_URL . "?" . http_build_query($prms);
     $client = new Client($ws);
 
     while (true) {

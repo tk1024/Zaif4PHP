@@ -77,6 +77,16 @@ $active_orders = $zaif->trade(TradeApiEndpoint::ACTIVE_ORDERS, ['currency_pair' 
 var_dump($info, $trade_ask, $active_orders);
 ```
 
+### 先物公開API
+
+```php
+// 先物取引の情報を取得します
+$groups = Zaif::publicFutures(PublicFuturesApiEndpoint::GROUPS, [
+    "all"
+]);
+var_dump($groups);
+```
+
 ### レバレッジ取引API
 
 ```php
