@@ -109,15 +109,7 @@ class Zaif
       throw new Exception("Argument has not been set.");
     }
 
-    $postdata = [
-      "nonce" => $this->getNonceWithIncrement(),
-      "method" => $endpoint
-    ];
-
-    if (!empty($prms)) {
-      $postdata = array_merge($postdata, $prms);
-    }
-
+    $postdata = $this->getPostData($endpoint, $prms);
     $postdata_query = http_build_query($postdata);
     $data = CurlWrapper::post(self::TRADE_BASE_URL, $this->getTradeHeader($postdata_query), $postdata_query);
     $data = json_decode($data);
@@ -144,6 +136,15 @@ class Zaif
       throw new Exception("Argument has not been set.");
     }
 
+    $postdata = $this->getPostData($endpoint, $prms);
+    $postdata_query = http_build_query($postdata);
+    $data = CurlWrapper::post(self::TRADE_LEVERAGE_BASE_URL, $this->getTradeHeader($postdata_query), $postdata_query);
+    $data = json_decode($data);
+
+    return $data;
+  }
+
+  private function getPostData($endpoint, $prms) {
     $postdata = [
       "nonce" => $this->getNonceWithIncrement(),
       "method" => $endpoint
@@ -153,11 +154,7 @@ class Zaif
       $postdata = array_merge($postdata, $prms);
     }
 
-    $postdata_query = http_build_query($postdata);
-    $data = CurlWrapper::post(self::TRADE_LEVERAGE_BASE_URL, $this->getTradeHeader($postdata_query), $postdata_query);
-    $data = json_decode($data);
-
-    return $data;
+    return $postdata;
   }
 
   private function getNonceWithIncrement()
