@@ -33,7 +33,7 @@ require 'Zaif.php';
 ### 返り値
 JSONがデコードされた状態で値が帰ってきます。
 
-### Public API
+### 現物公開API
 
 Public APIを使うのにAPI Keyを発行する必要はありません。
 ```php
@@ -46,7 +46,7 @@ $depth = Zaif::pub(PublicApiEndpoint::DEPTH,"mona_jpy");
 //出力
 var_dump($price, $depth);
 ```
-### Trade API
+### 現物取引API
 
 Trade APIを使うのにAPI Keyを発行する必要があります。
 https://zaif.jp/api_keys で事前にAPI Keyを発行し、permsのtrade(情報を見る場合はinfoも)を有効にしておいて下さい。
@@ -76,6 +76,34 @@ $active_orders = $zaif->trade(TradeApiEndpoint::ACTIVE_ORDERS, ['currency_pair' 
 //出力
 var_dump($info, $trade_ask, $active_orders);
 ```
+
+### レバレッジ取引API
+
+```php
+
+$key = "YOUR API KEY";
+$secret = "YOUR API SECRET";
+
+//インスタンスの生成
+$zaif = new Zaif($key, $secret);
+
+$price = 720000;
+
+// BTCJPYの2.5倍マージン取引の買いポジションを作成
+$create_position = $zaif->tradeLeverage(TradeLeverageApiEndpoint::CREATE_POSITION, [
+  "type" => "margin",
+  "currency_pair" => "btc_jpy",
+  "action" => "bid",
+  "price" => $price,
+  "amount" => 0.001,
+  "leverage" => 2.5
+]);
+
+// 出力
+var_dump($create_position);
+
+```
+
 ### Streaming API
 
 Streaming APIを使うのにAPI Keyを発行する必要はありません。
